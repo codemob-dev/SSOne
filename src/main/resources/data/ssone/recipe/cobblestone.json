@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "oo",
+    "oo"
+  ],
+  "key": {
+    "o": {
+      "item": "ssone:pebble"
+    }
+  },
+  "result": {
+    "id": "minecraft:cobblestone",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "# #",
+    "###",
+    "# #"
+  ],
+  "key": {
+    "#": {
+      "item": "ssone:copper_rod"
+    }
+  },
+  "result": {
+    "id": "ssone:copper_ladder",
+    "count": 3
+  }
+}

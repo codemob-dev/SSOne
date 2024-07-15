@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ssone:mustard"
+      }
+    },
+    "has_ingredients": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:wheat_seeds"
+          },
+          {
+            "items": "ssone:pebble"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ingredients"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ssone:mustard"
+    ]
+  }
+}

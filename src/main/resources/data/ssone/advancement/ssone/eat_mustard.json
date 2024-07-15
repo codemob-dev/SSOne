@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "id": "ssone:mustard",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancements.ssone.eat_mustard.title"
+    },
+    "description": {
+      "translate": "advancements.ssone.eat_mustard.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "ssone:ssone/root",
+  "criteria": {
+    "eat_mustard": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": "ssone:mustard"
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "eat_mustard"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

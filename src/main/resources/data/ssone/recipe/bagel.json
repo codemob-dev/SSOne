@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "# #",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:bread"
+    }
+  },
+  "result": {
+    "id": "ssone:bagel",
+    "count": 6
+  }
+}

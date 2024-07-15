@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "o",
+    "%",
+    "u"
+  ],
+  "key": {
+    "o": {
+      "item": "ssone:pebble"
+    },
+    "u": {
+      "item": "minecraft:glass_bottle"
+    },
+    "%": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "result": {
+    "id": "ssone:mustard",
+    "count": 1
+  }
+}

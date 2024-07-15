@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ssone:copper_ladder"
+      }
+    },
+    "has_copper_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "ssone:copper_rod"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_copper_rod"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "ssone:copper_ladder"
+    ]
+  }
+}

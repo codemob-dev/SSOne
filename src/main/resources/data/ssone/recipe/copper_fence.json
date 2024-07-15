@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_fence",
+  "pattern": [
+    "W#W",
+    "W#W"
+  ],
+  "key": {
+    "#": {
+      "item": "ssone:copper_rod"
+    },
+    "W": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "result": {
+    "id": "ssone:copper_fence",
+    "count": 3
+  }
+}

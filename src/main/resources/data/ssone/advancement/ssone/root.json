@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:chiseled_tuff",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancements.ssone.root.title"
+    },
+    "description": {
+      "translate": "advancements.ssone.root.description"
+    },
+    "background": "ssone:textures/gui/advancements/backgrounds/ssone.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "any": {
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "any"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": {
+      "id": "ssone:pebble",
+      "count": 1
+    },
+    "title": {
+      "translate": "advancements.ssone.pebble.title"
+    },
+    "description": {
+      "translate": "advancements.ssone.pebble.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "ssone:ssone/root",
+  "criteria": {
+    "shot_pebble": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "tags": [
+              {
+                "id": "minecraft:is_projectile",
+                "expected": true
+              }
+            ],
+            "direct_entity": {
+              "type": "ssone:pebble"
+            }
+          }
+        }
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shot_pebble"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
