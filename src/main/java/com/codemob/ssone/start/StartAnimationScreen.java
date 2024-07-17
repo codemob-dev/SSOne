@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
@@ -16,14 +18,11 @@ import java.awt.*;
 
 import static com.mojang.blaze3d.systems.RenderSystem.*;
 
+@OnlyIn(Dist.CLIENT)
 public class StartAnimationScreen extends Screen {
-    private Screen screenToOpen = null;
     private SyncVideoPlayer player;
 
     private static final String videoURL = "https://github.com/codemob-dev/SSOne/raw/master/start_anim.mp4";
-    public void setScreenToOpen(Screen screenToOpen) {
-        this.screenToOpen = screenToOpen;
-    }
 
     public StartAnimationScreen() {
         super(GameNarrator.NO_TITLE);
@@ -40,13 +39,12 @@ public class StartAnimationScreen extends Screen {
     public void tick() {
         super.tick();
         if (player.isEnded()) {
-            Minecraft.getInstance().setScreen(screenToOpen);
+            onClose();
         }
     }
 
     @Override
     public void onClose() {
-        player.release();
         super.onClose();
     }
 
