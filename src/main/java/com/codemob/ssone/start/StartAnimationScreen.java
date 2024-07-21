@@ -28,6 +28,7 @@ public class StartAnimationScreen extends Screen {
         super(GameNarrator.NO_TITLE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void init() {
         player = new SyncVideoPlayer(Minecraft.getInstance());

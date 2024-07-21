@@ -4,14 +4,17 @@ import com.codemob.ssone.SSOne;
 import com.codemob.ssone.Utils;
 import com.codemob.ssone.network.CPlayStartAnimationPacket;
 import com.codemob.ssone.network.PacketHandler;
+import com.codemob.ssone.role.system.RoleManager;
 import com.codemob.ssone.start.StartManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,16 +36,17 @@ public class CommonEvents {
 
         if (!previousPlayers.contains(player.getUUID())) {
             previousPlayers.add(player.getUUID());
-            BlockPos pos = startManager.getBlimpSpawn();
-            player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
-            PacketHandler.sendToPlayer(new CPlayStartAnimationPacket(), player);
+            if (Utils.isNormalSetup(player.getServer())) {
+                BlockPos pos = startManager.getBlimpSpawn();
+                player.teleportTo(pos.getX(), pos.getY(), pos.getZ());
+                PacketHandler.sendToPlayer(new CPlayStartAnimationPacket(), player);
+            }
         }
     }
-    @SuppressWarnings("All")
     @SubscribeEvent
     public static void onServerStart(ServerStartedEvent event) {
         StartManager startManager = StartManager.get(event.getServer());
-        if (!startManager.hasGeneratedBlimp()) {
+        if (Utils.isNormalSetup(event.getServer()) && !startManager.hasGeneratedBlimp()) {
             ServerLevel overworld = event.getServer().overworld();
             BlockPos pos = overworld.getSharedSpawnPos();
 
@@ -55,8 +59,17 @@ public class CommonEvents {
 
             startManager.setGeneratedBlimp();
             BlockPos spawn = Utils.findNearbyBlock(pos, overworld, block -> block.getBlock() == Blocks.BLUE_CONCRETE, 48, false);
+            assert spawn != null;
             overworld.setBlockAndUpdate(spawn, Blocks.AIR.defaultBlockState());
             startManager.setBlimpSpawn(spawn);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            MinecraftServer server = Objects.requireNonNull(player.getServer());
+            RoleManager.get(server).getRole(player).onDeath(event, player);
         }
     }
 }

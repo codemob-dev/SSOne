@@ -3,6 +3,7 @@ package com.codemob.ssone;
 import net.minecraft.core.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
@@ -13,9 +14,14 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Utils {
+    public static boolean isNormalSetup(MinecraftServer server) {
+        return server.getDefaultGameType().isSurvival() && server.isDedicatedServer();
+    }
     public static void genStructure(ServerLevel serverlevel, Structure structure, BlockPos pos) {
         ChunkGenerator chunkgenerator = serverlevel.getChunkSource().getGenerator();
         StructureStart structurestart = structure.generate(
@@ -109,5 +115,23 @@ public class Utils {
     }
     public static int[] intArrayFromBlockPos(BlockPos pos) {
         return new int[] {pos.getX(), pos.getY(), pos.getZ()};
+    }
+    @Immutable
+    public static class ClassWithSupplier<T> {
+        private final Class<T> klass;
+        private final Supplier<T> supplier;
+
+        public ClassWithSupplier(Class<T> klass, Supplier<T> supplier) {
+            this.klass = klass;
+            this.supplier = supplier;
+        }
+
+        public Supplier<T> supplier() {
+            return supplier;
+        }
+
+        public Class<T> get() {
+            return klass;
+        }
     }
 }
