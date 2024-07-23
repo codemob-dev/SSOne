@@ -2,6 +2,7 @@ package com.codemob.ssone.role;
 
 import com.codemob.ssone.role.system.DefaultRole;
 import com.codemob.ssone.role.system.MagicAbilities;
+import com.codemob.ssone.role.system.RoleManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -11,6 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class NetherLordRole extends DefaultRole {
+
+    protected NetherLordRole(RoleManager manager) {
+        super(manager);
+    }
+
     @Override
     public UUID getDefaultUUID() {
         return UUID.fromString("0faa3273-9f71-4ee1-a63c-3faa927849c3"); // Dogoo_Dogster
@@ -36,7 +42,7 @@ public class NetherLordRole extends DefaultRole {
                 player.getZ(),
                 5.0F,
                 true,
-                Level.ExplosionInteraction.NONE
+                Level.ExplosionInteraction.MOB
         );
     }
 }

@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 
 public class Utils {
     public static boolean isNormalSetup(MinecraftServer server) {
+        //return true;
         return server.getDefaultGameType().isSurvival() && server.isDedicatedServer();
     }
     public static void genStructure(ServerLevel serverlevel, Structure structure, BlockPos pos) {

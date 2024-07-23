@@ -4,6 +4,7 @@ import com.codemob.ssone.block.ModdedBlocks;
 import com.codemob.ssone.entity.ModdedEntities;
 import com.codemob.ssone.item.ModdedItems;
 import com.codemob.ssone.network.PacketHandler;
+import com.codemob.ssone.role.ModRoles;
 import com.codemob.ssone.worldgen.biome.ModTerrablender;
 import com.codemob.ssone.worldgen.biome.surface.ModSurfaceRules;
 import com.mojang.logging.LogUtils;
@@ -44,15 +45,16 @@ public class SSOne
 
         ModTerrablender.registerBiomes();
 
+        ModRoles.registerRoles();
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        event.enqueueWork(() -> {
-            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules());
-        });
+        event.enqueueWork(() ->
+                SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, ModSurfaceRules.makeRules()));
         event.enqueueWork(PacketHandler::register);
     }
 

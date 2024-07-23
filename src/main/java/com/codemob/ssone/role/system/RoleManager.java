@@ -1,5 +1,6 @@
 package com.codemob.ssone.role.system;
 
+import com.codemob.ssone.SSOne;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -15,16 +16,18 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class RoleManager extends SavedData {
     private static final HashBiMap<ResourceLocation, Class<? extends DefaultRole>> registeredRoles = HashBiMap.create();
-    private static final HashMap<Class<? extends DefaultRole>, Supplier<? extends DefaultRole>> roleSuppliers = new HashMap<>();
+    private static final HashMap<Class<? extends DefaultRole>, Function<RoleManager, ? extends DefaultRole>> roleConstructors = new HashMap<>();
     private final HashMap<UUID, DefaultRole> playerRoles = new HashMap<>();
 
-
-    public static <T extends DefaultRole> void registerRole(@NotNull Class<T> role, @NotNull Supplier<T> supplier, @NotNull ResourceLocation id) {
+    public static <T extends DefaultRole> void registerRole(@NotNull Class<T> role, @NotNull Function<RoleManager, T> constructor, @NotNull ResourceLocation id) {
         if (registeredRoles.containsKey(id)) {
+            if (registeredRoles.get(id) == role) {
+                return;
+            }
             throw new RuntimeException("'%s' is already registered!".formatted(id));
         }
         if (Modifier.isAbstract(role.getModifiers())) {
@@ -37,7 +40,7 @@ public class RoleManager extends SavedData {
             throw new RuntimeException("'%s' is already registered!".formatted(role.toString()));
         }
         registeredRoles.put(id, role);
-        roleSuppliers.put(role, supplier);
+        roleConstructors.put(role, constructor);
     }
 
     public DefaultRole getRole(UUID player) {
@@ -48,21 +51,28 @@ public class RoleManager extends SavedData {
         return getRole(player.getUUID());
     }
     public void setRole(@NotNull UUID player, @NotNull Class<? extends DefaultRole> role) {
-        if (playerRoles.get(player).getClass() != role) {
-            playerRoles.put(player, roleSuppliers.get(role).get());
+        if (getRole(player).getClass() != role) {
+            playerRoles.put(player, roleConstructors.get(role).apply(this));
         }
     }
     public void setRole(@NotNull Player player, @NotNull Class<? extends DefaultRole> role) {
         setRole(player.getUUID(), role);
     }
     public void setRole(@NotNull UUID player, @NotNull ResourceLocation id) {
-        if (!registeredRoles.containsKey(id)) {
+        if (!roleExists(id)) {
             throw new RuntimeException("Could not find role '%s'".formatted(id));
         }
         setRole(player, Objects.requireNonNull(registeredRoles.get(id)));
     }
+    public boolean roleExists(ResourceLocation role) {
+        return registeredRoles.containsKey(role);
+    }
     public void setRole(@NotNull Player player, @NotNull ResourceLocation id) {
         setRole(player.getUUID(), id);
+    }
+
+    public ResourceLocation getRoleId(@NotNull DefaultRole role) {
+        return registeredRoles.inverse().get(role.getClass());
     }
 
     public static RoleManager get(MinecraftServer server) {
@@ -90,9 +100,14 @@ public class RoleManager extends SavedData {
     }
 
     private static RoleManager create() {
+        RoleManager.registerRole(
+                DefaultRole.class,
+                DefaultRole::new,
+                ResourceLocation.fromNamespaceAndPath(SSOne.MODID, "default"));
+
         RoleManager roleManager = new RoleManager();
         registeredRoles.forEach((loc, roleClass) -> {
-            DefaultRole role = roleSuppliers.get(roleClass).get();
+            DefaultRole role = roleConstructors.get(roleClass).apply(roleManager);
             UUID uuid = role.getDefaultUUID();
             roleManager.playerRoles.put(role.getDefaultUUID(), role);
         });

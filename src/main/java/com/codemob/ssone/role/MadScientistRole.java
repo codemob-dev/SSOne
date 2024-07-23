@@ -2,11 +2,17 @@ package com.codemob.ssone.role;
 
 import com.codemob.ssone.role.system.MagicAbilities;
 import com.codemob.ssone.role.system.DefaultRole;
+import com.codemob.ssone.role.system.RoleManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class MadScientistRole extends DefaultRole {
+
+    protected MadScientistRole(RoleManager manager) {
+        super(manager);
+    }
+
     @Override
     public UUID getDefaultUUID() {
         return UUID.fromString("3f8bbc1a-0fe7-48c8-a509-3b0a7ef80865"); // Codemob

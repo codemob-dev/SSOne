@@ -2,6 +2,7 @@ package com.codemob.ssone.event;
 
 import com.codemob.ssone.SSOne;
 import com.codemob.ssone.Utils;
+import com.codemob.ssone.command.RoleCommand;
 import com.codemob.ssone.network.CPlayStartAnimationPacket;
 import com.codemob.ssone.network.PacketHandler;
 import com.codemob.ssone.role.system.RoleManager;
@@ -14,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -71,5 +73,10 @@ public class CommonEvents {
             MinecraftServer server = Objects.requireNonNull(player.getServer());
             RoleManager.get(server).getRole(player).onDeath(event, player);
         }
+    }
+
+    @SubscribeEvent
+    public static void registerCommands(RegisterCommandsEvent event) {
+        RoleCommand.register(event.getDispatcher(), event.getBuildContext());
     }
 }
